@@ -11,6 +11,7 @@ assert(ES_HOST, 'es host must be provided');
 
 /**
  * 获得 JVM 列表
+ *
  * @returns {Array}
  */
 const getJavaProcessList = () => {
@@ -57,6 +58,7 @@ const getListeningPortList = () => {
 
 /**
  * 获取第一个内网网卡的信息
+ *
  * @returns {Object}
  */
 const getLANInterface = () => {
