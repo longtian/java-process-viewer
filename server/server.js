@@ -27,3 +27,9 @@ app.get('/', (req, res) => {
 });
 
 app.listen(3000);
+
+['SIGINT', 'SIGTERM'].forEach(signal => {
+  process.on(signal, () => {
+    process.exit(0)
+  });
+});
