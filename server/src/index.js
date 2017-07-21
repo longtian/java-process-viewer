@@ -2,7 +2,8 @@ import React from 'react';
 import {
   HashRouter as Router,
   Route,
-  NavLink
+  NavLink,
+  Redirect
 } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -22,7 +23,7 @@ render(
       <div>
         <ul className="nav nav-tabs">
           <li>
-            <NavLink activeClassName="active" to="/">Home</NavLink>
+            <NavLink activeClassName="active" to="/hosts">Hosts</NavLink>
           </li>
           <li>
             <NavLink activeClassName="active" to="/services">Services</NavLink>
@@ -31,8 +32,8 @@ render(
         <hr/>
         <Actions/>
         <hr/>
-        <Route exact path="/" component={Hosts}/>
-        <Route path="/services" component={Services}/>
+        <Route path="/hosts" component={Hosts}/>
+        <Route path="/services/:filterKey?/:filterValue?" component={Services}/>
       </div>
     </Router>
   </Provider>

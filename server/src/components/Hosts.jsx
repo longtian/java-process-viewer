@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import moment from 'moment';
 
 class Hosts extends React.Component {
 
@@ -8,7 +9,8 @@ class Hosts extends React.Component {
     const {
       address,
       status,
-      username
+      mac,
+      timestampe
     } = host;
 
     const cla = {
@@ -22,8 +24,9 @@ class Hosts extends React.Component {
         <td>
           <span className={classnames(cla)}>{status}</span>
         </td>
+        <td>{moment(timestampe).format('YYYY-MM-DD HH:mm:ss')}</td>
         <td>{address}</td>
-        <td>{username}</td>
+        <td>{mac}</td>
       </tr>
     )
   }
@@ -35,9 +38,10 @@ class Hosts extends React.Component {
         <table className="table table-striped table-condensed">
           <thead>
           <tr>
-            <th>Staus</th>
-            <th>Address</th>
-            <th>Username</th>
+            <th>状态</th>
+            <th>最后一次心跳</th>
+            <th>内网 IP</th>
+            <th>Mac地址</th>
           </tr>
           </thead>
           <tbody>
