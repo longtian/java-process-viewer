@@ -28,7 +28,7 @@ module.exports = () => {
                 size: 1,
                 sort: [
                   {
-                    "timestampe": {
+                    "timestamp": {
                       order: "desc"
                     }
                   }

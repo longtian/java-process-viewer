@@ -10,7 +10,7 @@ class Hosts extends React.Component {
       address,
       status,
       mac,
-      timestampe
+      timestamp
     } = host;
 
     const cla = {
@@ -24,7 +24,7 @@ class Hosts extends React.Component {
         <td>
           <span className={classnames(cla)}>{status}</span>
         </td>
-        <td>{moment(timestampe).format('YYYY-MM-DD HH:mm:ss')}</td>
+        <td>{moment(timestam).format('YYYY-MM-DD HH:mm:ss')}</td>
         <td>{address}</td>
         <td>{mac}</td>
       </tr>

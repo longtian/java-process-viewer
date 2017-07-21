@@ -111,7 +111,7 @@ const log = (message) => {
     pid: process.pid,
     message,
     hostname: os.hostname(),
-    timestampe: (new Date()).toISOString(),
+    timestamp: (new Date()).toISOString(),
     username: os.userInfo().username,
   }, getLANInterface(), {
     jps,
