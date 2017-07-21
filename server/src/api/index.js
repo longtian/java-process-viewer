@@ -1,6 +1,10 @@
 import 'whatwg-fetch';
 
-export const hosts = () => fetch('/api/hosts')
+const fetchOptions = {
+  credentials: 'same-origin'
+};
+
+export const hosts = () => fetch('/api/hosts', fetchOptions)
   .then(res => res.json())
   .then(hosts => hosts.map(host => {
     const {
