@@ -13,9 +13,11 @@ class Actions extends React.Component {
   }
 
   render() {
-    return (<div>
-      <button onClick={ this.handleClick.bind(this) }>Refresh</button>
-    </div>)
+    return (
+      <div>
+        <button className="btn" onClick={ this.handleClick.bind(this) }>Refresh</button>
+      </div>
+    );
   }
 }
 

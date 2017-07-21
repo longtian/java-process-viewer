@@ -22,9 +22,10 @@ class Hosts extends React.Component {
     return (
       <tr key={address}>
         <td>
+          {moment(timestamp).format('YYYY-MM-DD HH:mm:ss')}
+          &nbsp;
           <span className={classnames(cla)}>{status}</span>
         </td>
-        <td>{moment(timestamp).format('YYYY-MM-DD HH:mm:ss')}</td>
         <td>{address}</td>
         <td>{mac}</td>
       </tr>
@@ -38,10 +39,9 @@ class Hosts extends React.Component {
         <table className="table table-striped table-condensed">
           <thead>
           <tr>
-            <th>状态</th>
-            <th>最后一次心跳</th>
-            <th>内网 IP</th>
-            <th>Mac地址</th>
+            <th>Last Heartbeat</th>
+            <th>Internal IP</th>
+            <th>Mac Address</th>
           </tr>
           </thead>
           <tbody>

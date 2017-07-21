@@ -8,8 +8,9 @@ class Services extends React.Component {
       <div>
         <h3>
           Hosts: <span className="badge">{this.props.addresses.length}</span>
+          mainClassNames: <span className="badge">{this.props.mainClassNames.length}</span>
+          Services: <span className="badge">{this.props.services.length}</span>
         </h3>
-        {JSON.stringify(this.props.match)}
         <table className="table table-striped">
           <thead>
           <tr>
@@ -62,6 +63,8 @@ class Services extends React.Component {
 const mapStateToProps = (state, p) => {
   const services = [];
   const addresses = [];
+  const mainClassNames = [];
+
   const {
     filterKey,
     filterValue
@@ -74,7 +77,10 @@ const mapStateToProps = (state, p) => {
     host.jps.forEach(jvm => {
       if (!filterKey || (host[filterKey] === filterValue || jvm[filterKey] === filterValue)) {
         if (addresses.indexOf(host.address) === -1) {
-          addresses.push(host.address)
+          addresses.push(host.address);
+        }
+        if (mainClassNames.indexOf(jvm.main)) {
+          mainClassNames.push(jvm.main);
         }
         services.push(Object.assign({}, jvm, {
           address
@@ -84,7 +90,8 @@ const mapStateToProps = (state, p) => {
   });
   return {
     services,
-    addresses
+    addresses,
+    mainClassNames
   }
 }
 

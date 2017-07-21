@@ -1,9 +1,7 @@
 import React from 'react';
 import {
   HashRouter as Router,
-  Route,
-  NavLink,
-  Redirect
+  Route
 } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -13,28 +11,18 @@ import store from './store';
 import Hosts from './components/Hosts';
 import Services from './components/Services';
 import Actions from './components/Actions';
-
-const element = document.createElement('div');
-document.body.appendChild(element);
+import Nav from './components/Nav';
 
 render(
   <Provider store={store}>
     <Router>
       <div>
-        <ul className="nav nav-tabs">
-          <li>
-            <NavLink activeClassName="active" to="/hosts">Hosts</NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/services">Services</NavLink>
-          </li>
-        </ul>
-        <hr/>
-        <Actions/>
-        <hr/>
+        <Route component={Nav}/>
         <Route path="/hosts" component={Hosts}/>
         <Route path="/services/:filterKey?/:filterValue?" component={Services}/>
+        <hr/>
+        <Actions/>
       </div>
     </Router>
   </Provider>
-  , element);
+  , document.getElementById('root'));
