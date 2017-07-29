@@ -10,7 +10,7 @@ export const hosts = () => fetch('/api/hosts', fetchOptions)
     const {
       timestamp
     } = host;
-    const status = Date.now() - new Date(timestamp) <= 60000 ? 'alive' : 'fail';
+    const status = Date.now() - new Date(timestamp) <= 70000 ? 'alive' : 'fail';
     return Object.assign({}, host, {
       status
     });
