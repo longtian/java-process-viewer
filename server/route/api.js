@@ -1,7 +1,6 @@
 const Router = require('express').Router;
 const router = new Router();
 const getLatestStatus = require('../lib/getLatestStatus');
-const getPrimativeProperties = require('../lib/getPrimativeProperties');
 
 router.get('/hosts', (req, res) => {
   getLatestStatus()
@@ -15,9 +14,15 @@ router.get('/clients', (req, res) => {
   const wss = req.app.get('wss');
   wss.clients.forEach(item => {
     clients.push({
-      headers: item.info.headers,
-      socket: getPrimativeProperties(item._socket),
-      ws: getPrimativeProperties(item),
+      isBrowser: item.isBrowser,
+      isAlive: item.isAlive,
+      bytesRead: item._socket.bytesRead,
+      bytesWritten: item._socket.bytesWritten,
+      remoteAddress: item._socket.remoteAddress,
+      remotePort: item._socket.remotePort,
+      remotrHost: `${item._socket.remoteAddress}:${item._socket.remotePort}`,
+      protocolVersion: item.protocolVersion,
+      bytesReceived: item.bytesReceived,
     });
   });
   res.json(clients);
