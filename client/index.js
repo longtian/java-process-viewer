@@ -5,6 +5,7 @@ const assert = require('assert');
 const WebSocket = require('ws');
 const CONSTANTS = require('../server/constants');
 const WHITE_LIST = require('./whitelist');
+let backoff = 1000;
 
 const ES_HOST = process.env.ES;
 const WS_HOST = process.env.WS;
@@ -14,7 +15,6 @@ let count = 0;
 assert(ES_HOST, 'es host must be provided');
 assert(WS_HOST, 'ws host must be provided');
 
-const ws = new WebSocket(WS_HOST);
 
 const validate = command => {
   for (let i = 0; i < WHITE_LIST.length; i++) {
@@ -27,49 +27,57 @@ const validate = command => {
   throw new Error('illegal command');
 };
 
-ws.on('message', (msg) => {
-  console.log(msg);
-  try {
-    const {
-      type,
-      payload
-    } = JSON.parse(msg);
-    switch (type) {
-      case CONSTANTS.EXEC:
-        let success = true;
-        let result = null;
-        try {
-          validate(payload.command);
-          result = cp.execSync(payload.command).toString();
-        } catch (e) {
-          if (e.stderr) {
-            result = e.stderr.toString();
-          } else if (e.message) {
-            result = e.message;
+const startListeing = () => {
+  const ws = new WebSocket(WS_HOST);
+  ws.on('message', (msg) => {
+    console.log(msg);
+    try {
+      const {
+        type,
+        payload
+      } = JSON.parse(msg);
+      switch (type) {
+        case CONSTANTS.EXEC:
+          let success = true;
+          let result = null;
+          try {
+            validate(payload.command);
+            result = cp.execSync(payload.command).toString();
+          } catch (e) {
+            if (e.stderr) {
+              result = e.stderr.toString();
+            } else if (e.message) {
+              result = e.message;
+            }
+            success = false;
           }
-          success = false;
-        }
-        ws.send(JSON.stringify({
-          type: CONSTANTS.EXEC_RESULT,
-          payload: Object.assign({}, payload, {
-            result,
-            success
-          })
-        }));
-        break;
+          ws.send(JSON.stringify({
+            type: CONSTANTS.EXEC_RESULT,
+            payload: Object.assign({}, payload, {
+              result,
+              success
+            })
+          }));
+          break;
+      }
+    } catch (e) {
+      console.error(e);
     }
-  } catch (e) {
-    console.error(e);
-  }
-});
+  });
+  ws.on('open', () => {
+    console.log(`connected to ${WS_HOST}`);
+    backoff = 1000;
+  });
+  ws.on('close', () => {
+    backoff = backoff * 1.68;
+    console.log(`connection closed, will wait ${backoff} ms to retry`);
+    setTimeout(() => {
+      startListeing()
+    }, backoff);
+  });
+};
 
-ws.on('open', () => {
-  console.log(`connected to ${WS_HOST}`);
-});
-
-ws.on('close', () => {
-  console.log('connection closed');
-});
+startListeing();
 
 /**
  * 获得 JVM 列表
@@ -89,7 +97,8 @@ const getJavaProcessList = () => {
         main,
         options: options.join(' ')
       }
-    });
+    })
+    .filter(item => ['sun.tools.jps.Jps', 'sun.tools.jcmd.JCmd'].indexOf(item.main) === -1);
 };
 
 /**
