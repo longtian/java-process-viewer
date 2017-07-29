@@ -11,7 +11,8 @@ class Hosts extends React.Component {
       address,
       status,
       mac,
-      timestamp
+      timestamp,
+      version
     } = host;
 
     const cla = {
@@ -31,6 +32,7 @@ class Hosts extends React.Component {
           <Link to={`hosts/${address}`}>{address}</Link>
         </td>
         <td>{mac}</td>
+        <td>{version}</td>
       </tr>
     )
   }
@@ -45,6 +47,7 @@ class Hosts extends React.Component {
             <th>Last Heartbeat</th>
             <th>Internal IP</th>
             <th>Mac Address</th>
+            <th>Agent Version</th>
           </tr>
           </thead>
           <tbody>

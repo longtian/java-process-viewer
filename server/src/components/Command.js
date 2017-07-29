@@ -30,7 +30,6 @@ class Command extends React.Component {
     } = this.props;
 
     if (res) {
-      console.log(res);
       const {
         result,
         success

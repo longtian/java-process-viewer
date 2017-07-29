@@ -7,6 +7,7 @@ const CONSTANTS = require('../server/constants');
 const WHITE_LIST = require('./whitelist');
 let backoff = 1000;
 
+const version = process.env.VERSION || 'master';
 const ES_HOST = process.env.ES;
 const WS_HOST = process.env.WS;
 
@@ -182,6 +183,7 @@ const log = (message) => {
   const payload = Object.assign({}, {
     argv: process.argv,
     pid: process.pid,
+    version: version,
     message,
     hostname: os.hostname(),
     timestamp: (new Date()).toISOString(),

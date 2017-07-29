@@ -45,6 +45,16 @@ class Host extends React.Component {
                 {host.username}
               </td>
             </tr>
+            <tr>
+              <th>
+                version
+              </th>
+              <td>
+                <a target="_blank" href={`https://github.com/longtian/java-process-viewer/commit/${host.version}`}>
+                  {host.version}
+                </a>
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>
