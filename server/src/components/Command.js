@@ -1,7 +1,7 @@
 import React from 'react';
 import socket from '../socket';
 import { connect } from 'react-redux';
-
+import { EXEC } from '../../constants';
 class Command extends React.Component {
 
   constructor(...args) {
@@ -15,9 +15,12 @@ class Command extends React.Component {
       host
     } = this.props;
     socket.send({
-      command,
-      host,
-      uuid
+      type: EXEC,
+      payload: {
+        command,
+        host,
+        uuid
+      }
     });
   }
 
