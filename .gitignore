@@ -58,3 +58,4 @@ typings/
 .env
 
 /server/dist/
+/server/build.sh
