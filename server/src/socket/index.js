@@ -5,6 +5,14 @@ class Socket {
   constructor(host) {
     const ws = new WebSocket(host);
     this.ws = ws;
+    this.waiting = [];
+
+    ws.onopen = () => {
+      this.ready = true;
+      this.waiting.forEach(item => {
+        this.send(item);
+      })
+    }
     ws.onmessage = (msg) => {
       try {
         const {
@@ -27,7 +35,11 @@ class Socket {
   }
 
   send(payload) {
-    this.ws.send(JSON.stringify(payload))
+    if (!this.ready) {
+      this.waiting.push(payload);
+    } else {
+      this.ws.send(JSON.stringify(payload));
+    }
   }
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import uuid from 'uuid';
+import { Link } from 'react-router-dom';
 import Command from './Command';
 
 class Host extends React.Component {
@@ -56,7 +57,8 @@ class Host extends React.Component {
             <tr>
               <th>pid</th>
               <th>main</th>
-              <th>command</th>
+              <th>uptime</th>
+              <th>jcmd</th>
             </tr>
             </thead>
             <tbody>
@@ -71,7 +73,33 @@ class Host extends React.Component {
                       {item.main}
                     </td>
                     <td>
-                      <Command uuid={uuid.v4()} host={host.address} command={`jcmd ${item.pid} VM.version`}/>
+                      <Command uuid={uuid.v4()} host={host.address} command={`jcmd ${item.pid} VM.uptime`}/>
+                    </td>
+                    <td>
+                      <Link
+                        className="btn btn-default"
+                        to={`/hosts/${host.address}/jvm/${item.pid}/Thread.print`}>
+                        线程</Link>
+                      <Link
+                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/GC.run`}>
+                        手动GC</Link>
+                      <Link
+                        className="btn btn-default"
+                        to={`/hosts/${host.address}/jvm/${item.pid}/GC.class_histogram`}>
+                        类直方图</Link>
+                      <Link
+                        className="btn btn-default"
+                        to={`/hosts/${host.address}/jvm/${item.pid}/VM.system_properties`}>
+                        系统属性</Link>
+                      <Link
+                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.version`}>
+                        JVM 版本</Link>
+                      <Link
+                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.command_line`}>
+                        启动命令</Link>
+                      <Link
+                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.flags`}>
+                        Flags</Link>
                     </td>
                   </tr>
                 )
