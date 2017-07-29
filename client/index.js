@@ -4,6 +4,7 @@ const cp = require('child_process');
 const assert = require('assert');
 const WebSocket = require('ws');
 const CONSTANTS = require('../server/constants');
+const WHITE_LIST = require('./whitelist');
 
 const ES_HOST = process.env.ES;
 const WS_HOST = process.env.WS;
@@ -14,6 +15,17 @@ assert(ES_HOST, 'es host must be provided');
 assert(WS_HOST, 'ws host must be provided');
 
 const ws = new WebSocket(WS_HOST);
+
+const validate = command => {
+  for (let i = 0; i < WHITE_LIST.length; i++) {
+    if (WHITE_LIST[i] === command) {
+      return true;
+    } else if (WHITE_LIST[i] instanceof RegExp && WHITE_LIST[i].test(command)) {
+      return true;
+    }
+  }
+  throw new Error('illegal command');
+};
 
 ws.on('message', (msg) => {
   console.log(msg);
@@ -27,9 +39,14 @@ ws.on('message', (msg) => {
         let success = true;
         let result = null;
         try {
+          validate(payload.command);
           result = cp.execSync(payload.command).toString();
         } catch (e) {
-          result = e.stderr.toString();
+          if (e.stderr) {
+            result = e.stderr.toString();
+          } else if (e.message) {
+            result = e.message;
+          }
           success = false;
         }
         ws.send(JSON.stringify({
