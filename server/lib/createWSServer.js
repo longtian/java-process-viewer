@@ -9,7 +9,8 @@ const CONSTANTS = require('../constants');
  */
 const createWSServer = (server) => {
   const wss = new WebSocket.Server({
-    server
+    server,
+    path: '/ws'
   });
   wss.on('connection', (ws, req) => {
     const remoteAddress = req.connection.remoteAddress;

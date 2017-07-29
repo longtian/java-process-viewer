@@ -31,4 +31,4 @@ class Socket {
   }
 }
 
-export default new Socket(`ws://${window.location.host}`)
+export default new Socket(`ws://${window.location.host}/ws`)
