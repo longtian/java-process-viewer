@@ -2,12 +2,54 @@ const http = require('http');
 const os = require('os');
 const cp = require('child_process');
 const assert = require('assert');
+const WebSocket = require('ws');
 
 const ES_HOST = process.env.ES;
+const WS_HOST = process.env.WS;
+
 let count = 0;
 
 assert(ES_HOST, 'es host must be provided');
+assert(WS_HOST, 'ws host must be provided');
 
+const ws = new WebSocket(WS_HOST);
+
+
+ws.on('message', (msg) => {
+  console.log(msg);
+  try {
+    const payload = JSON.parse(msg);
+    if (payload.command) {
+      const {
+        uuid
+      } = payload;
+
+      let success = true;
+      let result = null;
+      try {
+        result = cp.execSync(payload.command).toString();
+      } catch (e) {
+        result = e.stderr.toString();
+        success = false;
+      }
+      ws.send(JSON.stringify({
+        uuid,
+        result,
+        success
+      }));
+    }
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+ws.on('open', () => {
+  console.log(`connected to ${WS_HOST}`);
+});
+
+ws.on('close', () => {
+  console.log('connection closed');
+});
 
 /**
  * 获得 JVM 列表

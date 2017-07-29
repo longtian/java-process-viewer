@@ -28,7 +28,7 @@ class Hosts extends React.Component {
           <span className={classnames(cla)}>{status}</span>
         </td>
         <td>
-          <Link to={`services/address/${address}`}>{address}</Link>
+          <Link to={`hosts/${address}`}>{address}</Link>
         </td>
         <td>{mac}</td>
       </tr>

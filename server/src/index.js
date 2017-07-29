@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 
 import store from './store';
 
+import Host from './components/Host';
 import Hosts from './components/Hosts';
 import Services from './components/Services';
 import Actions from './components/Actions';
@@ -18,7 +19,8 @@ render(
     <Router>
       <div>
         <Route component={Nav}/>
-        <Route path="/hosts" component={Hosts}/>
+        <Route exact path="/hosts" component={Hosts}/>
+        <Route exact path="/hosts/:address" component={Host}/>
         <Route path="/services/:filterKey?/:filterValue?" component={Services}/>
         <hr/>
         <Actions/>
