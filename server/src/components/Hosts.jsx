@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 class Hosts extends React.Component {
 
@@ -26,7 +27,9 @@ class Hosts extends React.Component {
           &nbsp;
           <span className={classnames(cla)}>{status}</span>
         </td>
-        <td>{address}</td>
+        <td>
+          <Link to={`services/address/${address}`}>{address}</Link>
+        </td>
         <td>{mac}</td>
       </tr>
     )
