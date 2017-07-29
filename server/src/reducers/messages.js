@@ -1,6 +1,8 @@
+import { EXEC_RESULT } from '../../constants';
+
 const messages = (state = {}, action) => {
   switch (action.type) {
-    case 'MESSAGE':
+    case EXEC_RESULT:
       const {
         uuid
       } = action.payload;

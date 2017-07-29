@@ -15,6 +15,7 @@
   "author": "longtian <wyvernnot@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "debug": "^2.6.8",
     "ejs": "^2.5.6",
     "elasticsearch": "^13.2.0",
     "express": "^4.15.3",

@@ -3,6 +3,7 @@ const os = require('os');
 const cp = require('child_process');
 const assert = require('assert');
 const WebSocket = require('ws');
+const CONSTANTS = require('../server/constants');
 
 const ES_HOST = process.env.ES;
 const WS_HOST = process.env.WS;
@@ -14,29 +15,31 @@ assert(WS_HOST, 'ws host must be provided');
 
 const ws = new WebSocket(WS_HOST);
 
-
 ws.on('message', (msg) => {
   console.log(msg);
   try {
-    const payload = JSON.parse(msg);
-    if (payload.command) {
-      const {
-        uuid
-      } = payload;
-
-      let success = true;
-      let result = null;
-      try {
-        result = cp.execSync(payload.command).toString();
-      } catch (e) {
-        result = e.stderr.toString();
-        success = false;
-      }
-      ws.send(JSON.stringify({
-        uuid,
-        result,
-        success
-      }));
+    const {
+      type,
+      payload
+    } = JSON.parse(msg);
+    switch (type) {
+      case CONSTANTS.EXEC:
+        let success = true;
+        let result = null;
+        try {
+          result = cp.execSync(payload.command).toString();
+        } catch (e) {
+          result = e.stderr.toString();
+          success = false;
+        }
+        ws.send(JSON.stringify({
+          type: CONSTANTS.EXEC_RESULT,
+          payload: Object.assign({}, payload, {
+            result,
+            success
+          })
+        }));
+        break;
     }
   } catch (e) {
     console.error(e);
