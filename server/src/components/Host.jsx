@@ -76,30 +76,32 @@ class Host extends React.Component {
                       <Command uuid={uuid.v4()} host={host.address} command={`jcmd ${item.pid} VM.uptime`}/>
                     </td>
                     <td>
-                      <Link
-                        className="btn btn-default"
-                        to={`/hosts/${host.address}/jvm/${item.pid}/Thread.print`}>
-                        线程</Link>
-                      <Link
-                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/GC.run`}>
-                        手动GC</Link>
-                      <Link
-                        className="btn btn-default"
-                        to={`/hosts/${host.address}/jvm/${item.pid}/GC.class_histogram`}>
-                        类直方图</Link>
-                      <Link
-                        className="btn btn-default"
-                        to={`/hosts/${host.address}/jvm/${item.pid}/VM.system_properties`}>
-                        系统属性</Link>
-                      <Link
-                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.version`}>
-                        JVM 版本</Link>
-                      <Link
-                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.command_line`}>
-                        启动命令</Link>
-                      <Link
-                        className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.flags`}>
-                        Flags</Link>
+                      <div className="btn-group">
+                        <Link
+                          className="btn btn-default"
+                          to={`/hosts/${host.address}/jvm/${item.pid}/Thread.print`}>
+                          线程</Link>
+                        <Link
+                          className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/GC.run`}>
+                          手动GC</Link>
+                        <Link
+                          className="btn btn-default"
+                          to={`/hosts/${host.address}/jvm/${item.pid}/GC.class_histogram`}>
+                          类统计</Link>
+                        <Link
+                          className="btn btn-default"
+                          to={`/hosts/${host.address}/jvm/${item.pid}/VM.system_properties`}>
+                          系统属性</Link>
+                        <Link
+                          className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.version`}>
+                          JVM 版本</Link>
+                        <Link
+                          className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.command_line`}>
+                          启动命令</Link>
+                        <Link
+                          className="btn btn-default" to={`/hosts/${host.address}/jvm/${item.pid}/VM.flags`}>
+                          Flags</Link>
+                      </div>
                     </td>
                   </tr>
                 )
@@ -108,14 +110,34 @@ class Host extends React.Component {
             </tbody>
           </table>
         </div>
-
         <div className="panel panel-default">
           <div className="panel-heading">
-            RAW
+            端口
           </div>
-          <pre>
-            {JSON.stringify(this.props.host, null, 2)}
-          </pre>
+          <table className="table">
+            <tbody>
+            {
+              host.ports.map(item => {
+                return (
+                  <tr key={`${host.address}-${item.port}`}>
+                    <td>
+                      {item.host}
+                    </td>
+                    <td>
+                      {item.port}
+                    </td>
+                    <td>
+                      {item.pid}
+                    </td>
+                    <td>
+                      {item.program}
+                    </td>
+                  </tr>
+                )
+              })
+            }
+            </tbody>
+          </table>
         </div>
       </div>
     )
